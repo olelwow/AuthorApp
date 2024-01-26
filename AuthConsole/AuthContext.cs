@@ -14,7 +14,6 @@ namespace AuthConsole
         {
             optionsBuilder.UseSqlServer(
                 "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=AuthorDB");
-
         }
 
     }
