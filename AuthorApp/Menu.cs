@@ -21,10 +21,6 @@ namespace AuthorApp
                               "5. Exit");
             Console.Write(">");
         }
-        //public void AuthorTable ()
-        //{
-        //    string s = String.Format("|{0,5}|{1,5}|{2,5}|{3,5}|", "AuthorID", "Firstname", "Lastname", "Birthdate");
-        //    Console.WriteLine(s);
-        //}
+        
     }
 }

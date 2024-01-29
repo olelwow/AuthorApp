@@ -18,13 +18,30 @@ namespace AuthorApp
             using AuthContext context = new AuthContext();
             var authors = context.Authors.ToList();
             // Tar allt som finns i tabellen Authors och sparar i variabel
+            var books = context.Books.ToList();
 
-            var table = new ConsoleTable(["AuthorID", "Firstname", "Lastname", "Birthdate"]);
+            
+            
             
             foreach (var author in authors)
             {
+                var table = new ConsoleTable(["AuthorID", "Firstname", "Lastname", "Birthdate"]);
+                var bookTable = new ConsoleTable(["Book Title", "AuthorID"]);
                 table.AddRow(author.AuthorId, author.FirstName, author.LastName, author.BirthDate);
+                
+
+                foreach (var book in books)
+                {
+                    if (book.Author.AuthorId == author.AuthorId)
+                    {
+                        bookTable.AddRow(book.Title, book.Author.AuthorId);
+                    }
+                    
+                    
+                }
                 Console.WriteLine(table);
+                Console.WriteLine(bookTable);
+                
             }
         }
         public void AddAuthor (string firstName, string lastName, DateOnly date)
@@ -65,7 +82,27 @@ namespace AuthorApp
             }
             else
             {
-                Console.WriteLine("reeee");
+                Console.WriteLine("Do you want to add this author?");
+                string input = Console.ReadLine().ToLower();
+                if (input.Equals("yes"))
+                {
+                    Console.WriteLine("When was this author born?");
+                    DateOnly date = DateOnly.Parse(Console.ReadLine());
+
+                    var author = context.Authors.Add(new Author { FirstName = authorName[0], LastName = authorName[1], BirthDate = date });
+
+                    Console.WriteLine("What is the title of the book?");
+                    title = Console.ReadLine();
+
+                    var newAuthor = context.Authors.FirstOrDefault(a => a.FirstName == authorName[0] && a.LastName == authorName[1]);
+                    context.SaveChanges();
+                    if (newAuthor != null)
+                    {
+                        newAuthor.Books.Add(new Book() { Title = title });
+                        context.SaveChanges();
+                    }
+                    
+                }
             }
 
         }
